@@ -23,6 +23,7 @@ A full-stack flight booking platform with secure authentication, real-time seat 
 - [Prerequisites](#-prerequisites)
 - [Setup & Installation](#-setup--installation)
 - [API Reference](#-api-reference)
+- [Admin Setup](#-admin-setup)
 - [Default Credentials](#-default-credentials)
 - [Sample Flights](#-sample-flights)
 - [Security](#-security)
@@ -225,11 +226,16 @@ Frontend runs at → `http://localhost:3000`
 <details>
 <summary><b>🔐 Authentication</b></summary>
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login & get JWT token |
-| POST | `/api/auth/verify-otp` | Verify email OTP |
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/auth/register` | Register new customer | No |
+| POST | `/api/auth/login` | Login & get JWT token | No |
+| POST | `/api/auth/verify-email-otp` | Verify email OTP after registration | No |
+| POST | `/api/auth/resend-email-otp` | Resend OTP to email | No |
+| POST | `/api/auth/validate-email` | Check if email is a valid Gmail | No |
+| POST | `/api/auth/register-admin` | Register a new admin user | No ⚠️ |
+
+> ⚠️ `/api/auth/register-admin` is currently unprotected. See [Admin Setup](#-admin-setup) for details.
 
 </details>
 
@@ -274,6 +280,66 @@ Frontend runs at → `http://localhost:3000`
 | PUT | `/api/admin/flights/{id}` | Update flight |
 | DELETE | `/api/admin/flights/{id}` | Delete flight |
 | GET | `/api/admin/bookings` | View all bookings |
+
+</details>
+
+---
+
+## 👑 Admin Setup
+
+There are **3 ways** to create an admin account:
+
+<details>
+<summary><b>Option 1 — Pre-seeded via SQL (Default)</b></summary>
+
+Running `database_setup.sql` automatically inserts a default admin:
+
+| Field | Value |
+|-------|-------|
+| Username | `admin` |
+| Password | `password` |
+| Email | `admin@gmail.com` |
+
+> ⚠️ Change this password immediately in production.
+
+</details>
+
+<details>
+<summary><b>Option 2 — API Endpoint (No auth required currently)</b></summary>
+
+Send a `POST` request to `/api/auth/register-admin` with the following body:
+
+```json
+{
+  "username": "newadmin",
+  "email": "newadmin@gmail.com",
+  "password": "yourpassword",
+  "firstName": "Admin",
+  "lastName": "User",
+  "phoneNumber": "+911234567890"
+}
+```
+
+Differences from regular registration:
+- Role is set to `ADMIN` automatically
+- No email OTP verification required — account is active immediately
+- Returns a JWT token in the response
+
+> ⚠️ This endpoint is currently open to everyone (`permitAll`). In production, restrict it by updating `SecurityConfig.java`:
+> ```java
+> .requestMatchers("/api/auth/register-admin").hasRole("ADMIN")
+> ```
+
+</details>
+
+<details>
+<summary><b>Option 3 — Directly via Database</b></summary>
+
+Promote any existing user to admin by running:
+
+```sql
+UPDATE users SET role = 'ADMIN' WHERE username = 'someuser';
+```
 
 </details>
 
