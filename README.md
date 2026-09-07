@@ -1,177 +1,326 @@
-# Flight Booking System
+# ✈️ Flight Booking System
 
-A comprehensive flight booking website built with Spring Boot backend and React frontend.
+<div align="center">
 
-## Features
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.4-brightgreen?logo=springboot)
+![React](https://img.shields.io/badge/React-19.1.1-blue?logo=react)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-orange?logo=mysql)
+![JWT](https://img.shields.io/badge/Auth-JWT-yellow?logo=jsonwebtokens)
+![Java](https://img.shields.io/badge/Java-17-red?logo=openjdk)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-### User Features
-- User registration and authentication
+A full-stack flight booking platform with secure authentication, real-time seat management, payment integration, and email OTP verification.
+
+</div>
+
+---
+
+## 📑 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Prerequisites](#-prerequisites)
+- [Setup & Installation](#-setup--installation)
+- [API Reference](#-api-reference)
+- [Default Credentials](#-default-credentials)
+- [Sample Flights](#-sample-flights)
+- [Security](#-security)
+- [Future Enhancements](#-future-enhancements)
+
+---
+
+## ✨ Features
+
+<details>
+<summary><b>👤 User Features</b></summary>
+
+- Register & login with JWT-based authentication
+- Email OTP verification on registration
 - Search flights by source, destination, date, and airline
-- View flight availability
 - Book flights with passenger details
 - View booking history
 - Cancel bookings with refund
-- JWT-based secure authentication
+- Download PDF tickets
 
-### Admin Features
-- Add new flights
-- Update existing flights
-- Delete flights
+</details>
+
+<details>
+<summary><b>🛠️ Admin Features</b></summary>
+
+- Add, update, and delete flights
 - View all customer bookings
-- Manage flight inventory
+- Manage flight inventory and seat availability
+- Monitor flight status
 
-## Technology Stack
+</details>
 
-### Backend
-- Spring Boot 3.5.4
-- Spring Data JPA
-- Spring Security + JWT
-- MySQL Database
-- Lombok
-- SLF4J Logger
-- Maven
+<details>
+<summary><b>💳 Payment Features</b></summary>
 
-### Frontend
-- React.js
-- Bootstrap for styling
-- Axios for API calls
-- React Router for navigation
+- Razorpay payment gateway integration
+- Payment status tracking per booking
+- Refund on cancellation
 
-## Setup Instructions
+</details>
 
-### Prerequisites
-- Java 17 or higher
-- Node.js 16 or higher
-- MySQL 8.0 or higher
-- Maven 3.6 or higher
+---
 
-### Database Setup
-1. Install MySQL and create a database:
-```sql
-CREATE DATABASE flight_booking_db;
-```
+## 🧰 Tech Stack
 
-2. Update database credentials in `Backend/FlightReservation/src/main/resources/application.properties`:
-```properties
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-```
+| Layer | Technology |
+|---|---|
+| Backend | Spring Boot 3.5.4, Spring Data JPA, Spring Security |
+| Auth | JWT (jjwt 0.11.5), BCrypt |
+| Database | MySQL 8.0 |
+| Frontend | React 19.1.1, React Router 7.7.1 |
+| Styling | Bootstrap 5.3.7 |
+| HTTP Client | Axios 1.11.0 |
+| Payment | Razorpay Java SDK 1.4.3 |
+| PDF | OpenPDF 1.3.8 |
+| Email | Spring Boot Mail |
+| Build | Maven, npm |
 
-3. Run the database setup script:
-```bash
-mysql -u your_username -p flight_booking_db < database_setup.sql
-```
+---
 
-### Backend Setup
-1. Navigate to the backend directory:
-```bash
-cd Backend/FlightReservation
-```
-
-2. Install dependencies and run:
-```bash
-mvn clean install
-mvn spring-boot:run
-```
-
-The backend will start on `http://localhost:8080`
-
-### Frontend Setup
-1. Navigate to the frontend directory:
-```bash
-cd Frontend/flight-booking-frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm start
-```
-
-The frontend will start on `http://localhost:3000`
-
-## Default Credentials
-
-### Admin Login
-- Username: `admin`
-- Password: `password`
-
-### Test User
-You can register a new user or create one manually in the database.
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-
-### Flights
-- `GET /api/flights` - Get all flights
-- `POST /api/flights/search` - Search flights
-- `GET /api/flights/{id}` - Get flight by ID
-
-### Bookings
-- `POST /api/bookings` - Book a flight
-- `GET /api/bookings/my-bookings` - Get user bookings
-- `PUT /api/bookings/{reference}/cancel` - Cancel booking
-
-### Admin
-- `POST /api/admin/flights` - Add flight
-- `PUT /api/admin/flights/{id}` - Update flight
-- `DELETE /api/admin/flights/{id}` - Delete flight
-- `GET /api/admin/bookings` - Get all bookings
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 Project/
 ├── Backend/
 │   └── FlightReservation/
-│       ├── src/main/java/com/FlightReservationSystem/
-│       │   ├── entity/          # JPA entities
-│       │   ├── repository/      # Data repositories
-│       │   ├── service/         # Business logic
-│       │   ├── controller/      # REST controllers
-│       │   ├── dto/            # Data transfer objects
-│       │   └── security/       # Security configuration
-│       └── src/main/resources/
-│           └── application.properties
+│       └── src/main/java/com/FlightReservationSystem/
+│           ├── controller/
+│           │   ├── AdminController.java
+│           │   ├── AuthController.java
+│           │   ├── BookingController.java
+│           │   ├── FlightController.java
+│           │   └── PaymentController.java
+│           ├── dto/
+│           │   ├── BookingRequest.java
+│           │   ├── EmailOtpRequest.java
+│           │   ├── FlightSearchRequest.java
+│           │   ├── LoginRequest.java
+│           │   ├── PassengerInfo.java
+│           │   ├── PaymentRequest.java
+│           │   └── RegisterRequest.java
+│           ├── entity/
+│           │   ├── Booking.java
+│           │   ├── Flight.java
+│           │   └── User.java
+│           ├── exception/
+│           │   ├── GlobalExceptionHandler.java
+│           │   └── [Custom Exceptions...]
+│           ├── repository/
+│           │   ├── BookingRepository.java
+│           │   ├── FlightRepository.java
+│           │   └── UserRepository.java
+│           ├── security/
+│           │   ├── JwtAuthenticationFilter.java
+│           │   ├── JwtUtil.java
+│           │   └── SecurityConfig.java
+│           ├── service/
+│           │   ├── AuthService.java
+│           │   ├── BookingService.java
+│           │   ├── BookingCleanupService.java
+│           │   ├── EmailService.java
+│           │   ├── FlightService.java
+│           │   ├── FlightStatusService.java
+│           │   ├── OtpService.java
+│           │   ├── PaymentService.java
+│           │   └── TicketService.java
+│           └── FlightReservationApplication.java
 ├── Frontend/
 │   └── flight-booking-frontend/
-│       ├── src/
-│       │   ├── components/     # React components
-│       │   ├── context/       # Context providers
-│       │   └── services/      # API services
-│       └── public/
-└── database_setup.sql
+│       └── src/
+│           ├── components/
+│           │   ├── Landing.js
+│           │   ├── Login.js
+│           │   ├── Register.js
+│           │   ├── Navbar.js
+│           │   ├── FlightSearch.js
+│           │   ├── PassengerForm.js
+│           │   ├── BookingHistory.js
+│           │   ├── AdminDashboard.js
+│           │   ├── EmailVerification.js
+│           │   ├── EmailOtpVerification.js
+│           │   ├── AboutUs.js
+│           │   └── ContactUs.js
+│           ├── context/
+│           │   └── AuthContext.js
+│           ├── services/
+│           │   └── api.js
+│           └── styles/
+│               └── animations.css
+├── database_setup.sql
+└── README.md
 ```
 
-## Usage
+---
 
-1. Start both backend and frontend servers
-2. Open `http://localhost:3000` in your browser
-3. Register a new account or login with existing credentials
-4. Search for flights using the search form
-5. Book flights and manage your bookings
-6. Admin users can access the admin dashboard to manage flights
+## ✅ Prerequisites
 
-## Security Features
+- Java 17+
+- Node.js 16+ & npm
+- MySQL 8.0+
+- Maven 3.6+
 
-- JWT-based authentication
-- Password encryption using BCrypt
-- Role-based access control (ADMIN/CUSTOMER)
-- CORS configuration for frontend integration
-- Input validation and error handling
+---
 
-## Future Enhancements
+## 🚀 Setup & Installation
 
-- Payment gateway integration
-- Email notifications
-- Flight status updates
-- Seat selection
-- Multi-city booking
-- Mobile responsive design improvements
+<details>
+<summary><b>1. Database Setup</b></summary>
+
+```sql
+CREATE DATABASE IF NOT EXISTS flight_booking_db;
+```
+
+Update credentials in `Backend/FlightReservation/src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/flight_booking_db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+```
+
+Run the setup script to seed admin user and sample flights:
+
+```bash
+mysql -u your_username -p flight_booking_db < database_setup.sql
+```
+
+</details>
+
+<details>
+<summary><b>2. Backend Setup</b></summary>
+
+```bash
+cd Backend/FlightReservation
+mvn clean install
+mvn spring-boot:run
+```
+
+Backend runs at → `http://localhost:8080`
+
+</details>
+
+<details>
+<summary><b>3. Frontend Setup</b></summary>
+
+```bash
+cd Frontend/flight-booking-frontend
+npm install
+npm start
+```
+
+Frontend runs at → `http://localhost:3000`
+
+</details>
+
+---
+
+## 📡 API Reference
+
+<details>
+<summary><b>🔐 Authentication</b></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login & get JWT token |
+| POST | `/api/auth/verify-otp` | Verify email OTP |
+
+</details>
+
+<details>
+<summary><b>✈️ Flights</b></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/flights` | Get all flights |
+| POST | `/api/flights/search` | Search flights |
+| GET | `/api/flights/{id}` | Get flight by ID |
+
+</details>
+
+<details>
+<summary><b>📋 Bookings</b></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/bookings` | Book a flight |
+| GET | `/api/bookings/my-bookings` | Get user's bookings |
+| PUT | `/api/bookings/{reference}/cancel` | Cancel a booking |
+
+</details>
+
+<details>
+<summary><b>💳 Payments</b></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/payments/create-order` | Create Razorpay order |
+| POST | `/api/payments/verify` | Verify payment |
+
+</details>
+
+<details>
+<summary><b>🛠️ Admin</b></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/admin/flights` | Add new flight |
+| PUT | `/api/admin/flights/{id}` | Update flight |
+| DELETE | `/api/admin/flights/{id}` | Delete flight |
+| GET | `/api/admin/bookings` | View all bookings |
+
+</details>
+
+---
+
+## 🔑 Default Credentials
+
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | `admin` | `password` |
+| Customer | Register via UI | — |
+
+> ⚠️ Change the admin password after first login in production.
+
+---
+
+## 🛫 Sample Flights (Pre-seeded)
+
+| Flight | Airline | Route | Price |
+|--------|---------|-------|-------|
+| AI101 | Air India | Delhi → Mumbai | ₹5,500 |
+| SG202 | SpiceJet | Mumbai → Bangalore | ₹4,200 |
+| 6E303 | IndiGo | Bangalore → Chennai | ₹3,800 |
+| UK404 | Vistara | Chennai → Kolkata | ₹6,200 |
+| AI505 | Air India | Kolkata → Delhi | ₹5,800 |
+| SG606 | SpiceJet | Delhi → Goa | ₹4,500 |
+| 6E707 | IndiGo | Goa → Pune | ₹3,200 |
+| UK808 | Vistara | Pune → Hyderabad | ₹4,800 |
+
+---
+
+## 🔒 Security
+
+- JWT-based stateless authentication
+- BCrypt password hashing
+- Role-based access control (`ADMIN` / `CUSTOMER`)
+- Email OTP verification on registration
+- CORS configured for frontend at `localhost:3000`
+- Global exception handling with custom exceptions
+
+---
+
+## 🔮 Future Enhancements
+
+- [ ] Seat selection UI
+- [ ] Multi-city booking
+- [ ] Real-time flight status updates
+- [ ] Mobile responsive improvements
+- [ ] SMS notifications
+- [ ] Loyalty/rewards program
