@@ -1,0 +1,298 @@
+Flight Booking System – Development Guide (Prompts)
+
+## Tech Stack: 
+•   Frontend: React.js with Bootstrap 
+•   Backend: Spring Boot (Java), MySQL 
+•   Authentication: JWT-based 
+•   Payment: Razorpay Integration
+•   Testing: JUnit/Mockito (Spring Boot), React Testing Library 
+  
+## 🔰 Objective 
+To build a full-stack Flight Booking System that enables users to search flights, book tickets with multiple passengers, make secure payments, and provide admin functionality for flight management with secure authentication. 
+  
+## 🔢 Step-by-Step Prompts for Development 
+  
+### 🔹1 – React Project Setup 
+Generate a React project structure for a Flight Booking System with routing enabled. Include folders for components, services, and context. Provide initial code for App component and routing setup. 
+ 
+**Task:** 
+Generate a React project structure for a Flight Booking System with routing enabled. 
+**Includes:** 
+•   Folders for components/, services/, context/ 
+•   Initial code for App component and React Router setup 
+  
+### 🔹2 – Login & Registration UI (JWT-Based) 
+Generate React components for user login and registration forms with basic validations (email, password). Include routing and form logic using React hooks. Assume JWT will be returned from backend. Remove role selection from registration as admin roles should be added via backend only.
+ 
+**Task:** 
+Build login and registration forms using React hooks and state management. 
+**Includes:** 
+•   Email and password validation 
+•   Routing between login/registration 
+•   JWT assumed to be returned from backend
+•   No role selection in registration (CUSTOMER role by default)
+  
+### 🔹3 – Spring Boot Project Setup 
+Generate a Spring Boot project structure for a Flight Booking System with REST APIs. Use Maven, Java 17, and include dependencies for Spring Web, Spring Data JPA, MySQL, Spring Security, JWT, and Razorpay. 
+Create packages: `controller`, `service`, `repository`, `entity`, `security`, `dto`, `exception`. 
+Provide the basic application setup with `application.properties` configured for MySQL and Razorpay. 
+ 
+**Task:** 
+Set up a Spring Boot REST API project using Maven and Java 17. 
+**Includes:** 
+•   Dependencies: Spring Web, Spring Data JPA, MySQL, Spring Security, JWT, Razorpay 
+•   Package structure: controller, service, repository, entity, security, dto, exception
+•   application.properties configured for MySQL and payment gateway 
+  
+### 🔹4 – JWT-Based Authentication in Spring Boot 
+Implement JWT-based authentication in a Spring Boot application. Include: 
+- User entity with fields: id, username, email, password, firstName, lastName, phoneNumber, role (ADMIN/CUSTOMER)
+- Registration and login endpoints 
+- Password encryption using BCrypt 
+- JWT generation on login 
+- JWT filter to protect routes 
+- Secure endpoints using Spring Security 
+Use MySQL for user persistence and return JWT token on successful login. 
+ 
+**Task:** 
+Implement secure JWT authentication. 
+**Includes:** 
+•   Registration & login endpoints 
+•   Password hashing with BCrypt 
+•   Token generation with role information
+•   JWT filter and route protection 
+•   Spring Security setup with CORS configuration
+  
+### 🔹5 – MySQL Schema & JPA Entities 
+Create JPA entities and MySQL table schema for: 
+- `users`: id (PK, auto-increment), username (unique), email (unique), password, firstName, lastName, phoneNumber, role
+- `flights`: id (PK, auto-increment), flightNumber, airline, source, destination, departureTime, arrivalTime, price, economyPrice, businessPrice, totalSeats, availableSeats, economySeats, businessSeats, availableEconomySeats, availableBusinessSeats, status
+- `bookings`: id (PK, auto-increment), bookingReference (unique), user_id (FK), flight_id (FK), numberOfPassengers, totalAmount, refundAmount, status, paymentStatus, bookingDate, refundDate, passengerDetails, seatClass, razorpayOrderId
+Generate `User`, `Flight`, and `Booking` entities using JPA annotations. Define proper relationships between entities. 
+ 
+**Task:** 
+Define schema for users, flights, and bookings using JPA + MySQL. 
+**Includes:** 
+•   users: id, username (unique), email (unique), password, firstName, lastName, phoneNumber, role
+•   flights: id, flightNumber, airline, source, destination, departureTime, arrivalTime, pricing details, seat availability, status
+•   bookings: id, bookingReference (unique), user_id (FK), flight_id (FK), booking details, payment info
+•   Proper entity relationships and validations
+  
+### 🔹6 – Flight & Booking CRUD API (Spring Boot) 
+Develop RESTful APIs in Spring Boot to perform CRUD operations for flights and bookings. Include: 
+- Create, read, update, delete flight endpoints (admin only)
+- Search flights, book flights, cancel bookings
+- Use FlightController, BookingController, AdminController with respective services and repositories
+- Protect all endpoints using JWT authentication 
+- Integrate Razorpay for payment processing
+- Add validation for passenger details and seat availability
+ 
+**Task:** 
+Build REST endpoints for managing flights and bookings. 
+**Includes:** 
+•   Flight CRUD operations with admin-only access
+•   Flight search and booking creation
+•   Payment integration with Razorpay
+•   Protected with JWT authentication
+•   Input validation and business rules
+  
+### 🔹7 – React Services for API Integration 
+Create React services to connect frontend to backend API. Include AuthService for authentication, FlightService for flight operations, and BookingService for booking management. Add Axios interceptors for JWT token attachment and error handling.
+ 
+**Task:** 
+Create React services to connect frontend to backend API. 
+**Includes:** 
+•   AuthService, FlightService, BookingService using Axios 
+•   JWT token handling with Axios interceptors
+•   Error handling and response transformation
+  
+### 🔹8 – Flight Search & Booking Components
+Create React components for flight search, booking form with passenger details, and booking history. Include flight filtering by source, destination, date, and airline with proper form validations.
+ 
+**Task:** 
+Build React components for flight booking functionality. 
+**Includes:** 
+•   Flight search with filters: source, destination, date, airline, passengers
+•   Passenger details form with individual passenger information
+•   Booking history and management
+•   Seat class selection (Economy/Business)
+  
+### 🔹9 – Admin Functionality & Role-Based UI 
+Add admin-specific functionality including flight management operations. Implement role-based UI elements that show admin dashboard only to ADMIN users. Include forms for adding/editing flight information.
+ 
+**Task:** 
+Implement admin features with role-based access control. 
+**Includes:** 
+•   Add/Edit/Delete flight functionality for admins
+•   Role-based UI visibility
+•   Admin dashboard for flight and booking management
+•   Confirmation dialogs for delete operations
+  
+### 🔹10 – Route Protection & Navigation Security
+Implement React route protection using context and conditional rendering for protected pages, admin-only routes, and preventing logged-in users from accessing login page. Add proper navigation flow management.
+ 
+**Task:** 
+Set up comprehensive route protection and navigation security. 
+**Includes:** 
+•   Protected routes for authenticated users
+•   Admin-only route protection
+•   Login/logout navigation flow
+•   Proper state management with React Context
+  
+### 🔹11 – Payment Integration & Modern UI
+Integrate Razorpay payment gateway for secure flight booking payments. Add modern styling with Bootstrap components, gradient backgrounds, smooth animations, and responsive design. Use contemporary CSS techniques for professional appearance.
+ 
+**Task:** 
+Implement payment processing and enhance UI design. 
+**Includes:** 
+•   Razorpay payment gateway integration
+•   Bootstrap components with custom styling
+•   Smooth hover animations and transitions
+•   Responsive design for mobile and desktop
+•   Professional color scheme and typography
+  
+### 🔹12 – Form Validations & Error Handling
+Add comprehensive form validations including email format, passenger details validation, seat availability checks, and payment verification. Include user-friendly error messages and success feedback.
+ 
+**Task:** 
+Implement robust validation and error handling. 
+**Includes:** 
+•   Email, passenger details, and payment validations
+•   Seat availability and booking conflict prevention
+•   User-friendly error messages
+•   Success/failure feedback with styled alerts
+
+### 🔹13 – Passenger Details Management
+Implement comprehensive passenger information handling with individual passenger forms. Include validation for passenger names, ages, gender selection, and seat preferences. Allow booking for multiple passengers with different details.
+
+**Task:**
+Build passenger management functionality.
+**Includes:**
+•   Individual passenger detail forms
+•   Age validation and gender selection
+•   Seat preference options (Window, Aisle, Middle)
+•   Multiple passenger support in single booking
+•   Passenger detail storage and retrieval
+
+### 🔹14 – Booking Management & History
+Create booking management system with booking history, cancellation functionality, and ticket generation. Include booking status tracking and refund processing.
+
+**Task:**
+Implement complete booking lifecycle management.
+**Includes:**
+•   Booking history display with status tracking
+•   Booking cancellation with refund calculation
+•   Ticket generation and download functionality
+•   Booking reference system
+•   Status updates (Pending, Confirmed, Cancelled, Completed)
+
+### 🔹15 – Flight Status Management
+Implement automated flight status updates and booking cleanup services. Include scheduled tasks to update flight statuses and clean up expired bookings.
+
+**Task:**
+Build automated flight and booking status management.
+**Includes:**
+•   Scheduled flight status updates (Scheduled → Completed)
+•   Automatic booking status transitions
+•   Expired booking cleanup service
+•   Flight completion handling
+•   Seat availability restoration on cancellation
+
+### 🔹16 – Advanced Search & Filtering
+Enhance flight search with advanced filtering options including price range, departure time slots, airline preferences, and seat availability. Add sorting capabilities by price, duration, and departure time.
+
+**Task:**
+Implement advanced search and filtering features.
+**Includes:**
+•   Price range filtering
+•   Time slot filtering (Morning, Afternoon, Evening)
+•   Airline-specific filtering
+•   Seat availability filtering by class
+•   Sort by price, duration, departure time
+•   Search result pagination
+
+
+
+### 🔹17 – Testing & Quality Assurance
+Implement comprehensive testing suite including unit tests, integration tests, and end-to-end testing. Include test coverage reporting and continuous integration setup.
+
+**Task:**
+Build complete testing framework.
+**Includes:**
+•   Backend unit tests with JUnit/Mockito
+•   Frontend component tests with React Testing Library
+•   Integration tests for API endpoints
+•   Payment gateway testing with mock data
+•   Test coverage reporting
+•   Automated testing pipeline
+
+### 🔹18 – Performance Optimization
+Optimize application performance with database indexing, query optimization, caching strategies, and frontend performance improvements.
+
+**Task:**
+Implement performance optimization techniques.
+**Includes:**
+•   Database query optimization and indexing
+•   Redis caching for frequently accessed data
+•   Frontend code splitting and lazy loading
+•   Image optimization and compression
+•   API response caching
+•   Performance monitoring and metrics
+
+### 🔹19 – Security Enhancements
+Implement advanced security features including rate limiting, input sanitization, SQL injection prevention, and security headers configuration.
+
+**Task:**
+Enhance application security measures.
+**Includes:**
+•   Rate limiting for API endpoints
+•   Input validation and sanitization
+•   SQL injection prevention
+•   XSS protection
+•   CSRF token implementation
+•   Security headers configuration
+•   Audit logging for sensitive operations
+
+### 🔹20 – Deployment & DevOps
+Set up production deployment with Docker containerization, CI/CD pipeline, environment configuration, and monitoring setup.
+
+**Task:**
+Implement production deployment strategy.
+**Includes:**
+•   Docker containerization for frontend and backend
+•   CI/CD pipeline with GitHub Actions
+•   Environment-specific configuration
+•   Database migration scripts
+•   Application monitoring and logging
+•   Health check endpoints
+•   Load balancing configuration
+
+## ✅ Final Output 
+A fully functional, secure and responsive Flight Booking System with: 
+•   JWT-based authentication with role management
+•   Flight search and booking with multiple passengers
+•   Secure payment processing with Razorpay
+•   Admin functionality for flight management
+•   Modern UI with Bootstrap and custom animations
+•   Comprehensive form validations and error handling
+•   Route protection and navigation security
+•   Flight filtering and search capabilities
+•   Mobile-responsive design
+•   Clean architecture with proper separation of concerns
+•   Advanced features like notifications and performance optimization
+•   Production-ready deployment configurationns and error handling
+•   Route protection and navigation security
+•   Flight filtering and search capabilities
+•   Mobile-responsive design
+•   Clean architecture with proper separation of concerns
+
+## 🎯 Key Features Implemented:
+- **User Authentication**: Secure login/registration with JWT tokens
+- **Flight Management**: Search, book, and manage flight reservations
+- **Payment Processing**: Secure payments with Razorpay integration
+- **Multi-Passenger Booking**: Individual passenger details and seat selection
+- **Role-Based Access**: Different functionality for ADMIN and CUSTOMER roles
+- **Modern UI/UX**: Professional design with Bootstrap and animations
+- **Security**: Route protection, navigation controls, and input validation
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+
